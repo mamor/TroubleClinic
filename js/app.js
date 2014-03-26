@@ -10,7 +10,7 @@ My.App.controller('formCtrl', ['$scope', '$element', 'searchService', function (
         searchService.search({repository: $scope.repository, keyword: $scope.keyword});
     }
 
-    $element.on('keypress', function (evnet) {
+    $element.on('keypress', function (event) {
         if (event.keyCode === 13) {
             searchService.search({repository: $scope.repository, keyword: $scope.keyword});
         }
