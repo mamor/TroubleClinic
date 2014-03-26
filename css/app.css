@@ -1,0 +1,20 @@
+.input-repository {
+	position: relative;
+	margin-right: 4px;
+}
+.list-repository {
+	position: absolute;
+	top: 38px;
+	left: 0px;
+}
+.list-repository li {
+	padding: 5px;
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+}
+.list-repository li:last-child {
+	border-bottom: 0;
+}
+.list-repository li:hover {
+	background: #eee;
+}
