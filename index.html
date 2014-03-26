@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>GitHub issues search</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
@@ -9,6 +10,8 @@
 </head>
 <body ng-app="myApp">
 <div class="container">
+    <h1>GitHub issues search</h1>
+    <p><a target="_blank" href="https://github.com/mamor/gh-issues-search/issues">Feedback</a></p>
     <div ng-controller="formCtrl" class="form-inline">
         <input type="text" class="form-control" placeholder="repository/name" ng-model="repository" />
         <input type="text" class="form-control" placeholder="keyword" ng-model="keyword" />
