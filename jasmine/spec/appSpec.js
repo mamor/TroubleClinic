@@ -37,7 +37,7 @@ describe('app.js', function () {
 
                     var result = $injector.get('searchService').searchIssues({keyword: 'x', repo: 'y'});
 
-                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/issues?q=:keyword+repo::repo', {keyword: 'x', repo: 'y'});
+                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/issues?per_page=100&q=:keyword+repo::repo', {keyword: 'x', repo: 'y'});
                     expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
                     expect(result).toBe('test');
                 }));
@@ -64,7 +64,7 @@ describe('app.js', function () {
 
                     var result = $injector.get('searchService').searchRepositories({user: 'x', keyword: 'y'});
 
-                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/repositories?q=user::user+:keyword', {user: 'x', keyword: 'y'});
+                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/repositories?per_page=100&q=user::user+:keyword', {user: 'x', keyword: 'y'});
                     expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
                     expect(result).toBe('test');
                 }));

@@ -53,7 +53,7 @@ My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
     this.searchIssues = function (params) {
         var deferred = $q.defer();
 
-        var url = 'https://api.github.com/search/issues?q=:keyword+repo::repo';
+        var url = 'https://api.github.com/search/issues?per_page=100&q=:keyword+repo::repo';
         var paramDefaults = {keyword: params.keyword, repo: params.repo};
 
         $resource(url, paramDefaults).get(function (response) {
@@ -66,7 +66,7 @@ My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
     this.searchRepositories = function (params) {
         var deferred = $q.defer();
 
-        var url = 'https://api.github.com/search/repositories?q=user::user+:keyword';
+        var url = 'https://api.github.com/search/repositories?per_page=100&q=user::user+:keyword';
         var paramDefaults = {user: params.user, keyword: params.keyword};
 
         $resource(url, paramDefaults).get(function (response) {

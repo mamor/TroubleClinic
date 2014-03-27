@@ -25,11 +25,27 @@
                 <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
                 <button class="btn btn-default" ng-click="searchIssues()">Search</button>
             </div>
-            <ol>
-                <li ng-repeat="issue in issues">
-                    <a target="_blank" href="{{ issue.html_url }}">{{ issue.state }} - {{ issue.title }}</a>
-                </li>
-            </ol>
+            <h2>Results</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">No.</th>
+                        <th style="width: 5%;">State</th>
+                        <th style="width: 10%;">Created</th>
+                        <th style="width: 10%;">Updated</th>
+                        <th style="width: 70%;">Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(index, issue) in issues">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ issue.state }}</td>
+                        <td>{{ issue.created_at | date:'yyyy-MM-dd' }}</td>
+                        <td>{{ issue.updated_at | date:'yyyy-MM-dd' }}</td>
+                        <td><a target="_blank" href="{{ issue.html_url }}">{{ issue.title }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
