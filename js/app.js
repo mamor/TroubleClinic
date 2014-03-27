@@ -1,76 +1,91 @@
+/**
+ * initialize
+ */
 window.My = {}
 My.App = angular.module('myApp', []);
 
-My.App.controller('formCtrl', ['$scope', '$element', 'searchService', 'repositoryService', function ($scope, $element, searchService, repositoryService) {
+/**
+ * controllers
+ */
+My.App.controller('appCtrl', ['$scope', '$element', 'searchService', function ($scope, $element, searchService) {
     $scope.issues = [];
-    $scope.repos = [];
-    $scope.repository = '';
-    $scope.keyword = '';
-
-    var timeout;
-
-    $scope.search = function () {
-        searchService.search({repository: $scope.repository, keyword: $scope.keyword});
-    }
-
-    $element.on('keypress', function (event) {
-        if (event.keyCode === 13) {
-            searchService.search({repository: $scope.repository, keyword: $scope.keyword});
-        }
-    });
-
-    $element.on('keyup', '[ng-model="repository"]', function (event) {
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-            if ($scope.repository.match('/')) {
-                repositoryService.search({user: $scope.repository.split('/')[0], keyword: $scope.repository.split('/')[1]});
-            } else {
-                $scope.repos = [];
-            }
-        }, 300);
-    });
-
-    $scope.$on('searchCompleted', function (event, response) {
-        $scope.$apply(function () {
-            angular.copy(response.issues, $scope.issues);
-        });
-    });
-
-    $scope.$on('repositoryCompleted', function (event, response) {
-        $scope.$apply(function () {
-            angular.copy(response.repos, $scope.repos);
-        });
-    });
+    $scope.repositories = [];
+    $scope.inputRepository = '';
+    $scope.inputKeyword = '';
 
     $scope.selectRepository = function(repository) {
-        $scope.repository = repository;
-        $scope.repos = [];
+        $scope.inputRepository = repository;
+        $scope.repositories = [];
     };
 
+    // search
+    $scope.searchIssues = function () {
+        searchService.searchIssues({repo: $scope.inputRepository, keyword: $scope.inputKeyword});
+    }
+
+    var timeout;
+    $scope.searchRepositories = function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            $scope.repositories = [];
+
+            var splited = $scope.inputRepository.split('/');
+            if (splited.length == 2) {
+                searchService.searchRepositories({user: splited[0], keyword: splited[1]});
+            }
+        }, 200);
+    }
+
+    // subscribe global events
+    $scope.$on('searchIssuesCompleted', function (event, params) {
+        $scope.$apply(function () {
+            angular.copy(params.response.items, $scope.issues);
+        });
+    });
+
+    $scope.$on('searchRepositoriesCompleted', function (event, params) {
+        $scope.$apply(function () {
+            angular.copy(params.response.items, $scope.repositories);
+        });
+    });
 }]);
 
+/**
+ * services
+ */
 My.App.service('searchService', ['$rootScope', function ($rootScope) {
-    this.search = function (params) {
-        var url = 'https://api.github.com/search/issues?q=';
-        url += encodeURIComponent(params.keyword) + '+repo:' + encodeURIComponent(params.repository);
+    this.searchIssues = function (params) {
+        var url = 'https://api.github.com/search/issues?q=' +
+            encodeURIComponent(params.keyword) + '+repo:' + encodeURIComponent(params.repo);
 
         $.get(url, function (response) {
-            $rootScope.$broadcast('searchCompleted', {
-                issues: response.items
-            });
+            // publish global event
+            $rootScope.$broadcast('searchIssuesCompleted', {response: response});
+        });
+    }
+
+    this.searchRepositories = function (params) {
+        var url = 'https://api.github.com/search/repositories?q=' +
+            'user:' + encodeURIComponent(params.user) + '+' + encodeURIComponent(params.keyword);
+
+        $.get(url, function (response) {
+            // publish global event
+            $rootScope.$broadcast('searchRepositoriesCompleted', {response: response});
         });
     }
 }]);
 
-My.App.service('repositoryService', ['$rootScope', function ($rootScope) {
-    this.search = function (params) {
-        var url = 'https://api.github.com/search/repositories?q=';
-        url += 'user:' + encodeURIComponent(params.user) + '+' + encodeURIComponent(params.keyword);
-
-        $.get(url, function (response) {
-            $rootScope.$broadcast('repositoryCompleted', {
-                repos: response.items
-            });
+/**
+ * directives
+ */
+My.App.directive('myKeypressEnter', [function () {
+    return function (scope, element, attrs) {
+        element.on('keypress', function (event) {
+            if (event.keyCode === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.myKeypressEnter);
+                });
+            }
         });
-    }
+    };
 }]);

@@ -10,26 +10,27 @@
     <script src="js/app.js"></script>
 </head>
 <body ng-app="myApp">
-<div class="container">
-    <h1>GitHub issues search</h1>
-    <p><a target="_blank" href="https://github.com/mamor/gh-issues-search/issues">Feedback</a></p>
-    <div ng-controller="formCtrl" class="form-inline">
-        <div class="clearfix">
-            <div class="pull-left input-repository">
-                <input type="text" class="form-control" placeholder="name/repository" ng-model="repository" />
-                <ul class="list-unstyled panel panel-default list-repository">
-                    <li ng-repeat="repo in repos"><a ng-click="selectRepository(repo.full_name)">{{ repo.full_name }}</a></li>
-                </ul>
+    <div class="container">
+        <h1>GitHub issues search</h1>
+        <p><a target="_blank" href="https://github.com/mamor/gh-issues-search/issues">Feedback</a></p>
+
+        <div ng-controller="appCtrl">
+            <div class="form-inline" my-keypress-enter="searchIssues()">
+                <div class="pull-left input-repository">
+                    <input type="text" class="form-control" placeholder="username/repository" ng-keyup="searchRepositories()" ng-model="inputRepository" />
+                    <ul class="list-unstyled panel panel-default list-repository">
+                        <li ng-repeat="repository in repositories"><a ng-click="selectRepository(repository.full_name)">{{ repository.full_name }}</a></li>
+                    </ul>
+                </div>
+                <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
+                <button class="btn btn-default" ng-click="searchIssues()">Search</button>
             </div>
-            <input type="text" class="form-control" placeholder="keyword" ng-model="keyword" />
-            <button class="btn btn-default" ng-click="search()">Search</button>
+            <ol>
+                <li ng-repeat="issue in issues">
+                    <a target="_blank" href="{{ issue.html_url }}">{{ issue.state }} - {{ issue.title }}</a>
+                </li>
+            </ol>
         </div>
-        <ol>
-            <li ng-repeat="issue in issues">
-                <a target="_blank" href="{{ issue.html_url }}">{{ issue.state }} - {{ issue.title }}</a>
-            </li>
-        </ol>
     </div>
-</div>
 </body>
 </html>
