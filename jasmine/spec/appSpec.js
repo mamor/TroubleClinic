@@ -55,6 +55,13 @@ describe('app.js', function () {
                     expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
                     expect(result).toBe('test');
                 });
+
+                it('should call GitHub search issues API by state', function () {
+                    var result = injector.get('searchService').searchIssues({keyword: 'x', identity: 'y', state: 'z'});
+                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/issues?per_page=100&q=:keyword+user::user+state::state', {keyword: 'x', user: 'y', state: 'z'});
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(result).toBe('test');
+                });
             });
 
             describe('#searchRepositories()', function () {

@@ -25,6 +25,7 @@ My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searc
         $scope.repositories = [];
         $scope.inputIdentity = '';
         $scope.inputKeyword = '';
+        $scope.inputState = '';
         $scope.inputFilter = '';
     };
 
@@ -41,7 +42,7 @@ My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searc
     };
 
     $scope.searchIssues = function () {
-        var params = {identity: $scope.inputIdentity, keyword: $scope.inputKeyword};
+        var params = {identity: $scope.inputIdentity, keyword: $scope.inputKeyword, state: $scope.inputState};
 
         searchService.searchIssues(params).then(function (result) {
             $scope.issues = result.items;
@@ -92,6 +93,11 @@ My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
 
         var paramDefaults = isRepo ?
             {keyword: params.keyword, repo: params.identity} : {keyword: params.keyword, user: params.identity};
+
+        if (params.state) {
+            url += '+state::state';
+            paramDefaults.state = params.state;
+        }
 
         $resource(url, paramDefaults).get(function (response) {
             deferred.resolve(response);

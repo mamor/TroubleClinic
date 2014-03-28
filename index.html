@@ -25,6 +25,11 @@
                     </ul>
                 </span>
                 <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
+                <select class="form-control" ng-model="inputState">
+                    <option value="">All state</option>
+                    <option value="open">Only open</option>
+                    <option value="closed">Only closed</option>
+                </select>
                 <input type="text" class="form-control" placeholder="internal filter" ng-model="inputFilter" />
                 <a class="btn btn-link pull-right" target="_blank" href="https://github.com/mamor/gh-issues-search/issues" tabindex="-1">Feedback</a>
             </div>
