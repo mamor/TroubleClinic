@@ -10,11 +10,11 @@ My.App = angular.module('myApp', ['ngResource']);
 My.App.controller('appCtrl', ['$scope', '$element', 'searchService', function ($scope, $element, searchService) {
     $scope.issues = [];
     $scope.repositories = [];
-    $scope.inputRepository = '';
+    $scope.inputIdentity = '';
     $scope.inputKeyword = '';
 
-    $scope.selectRepository = function(repository) {
-        $scope.inputRepository = repository;
+    $scope.setIdentity = function(identity) {
+        $scope.inputIdentity = identity;
         $scope.repositories = [];
     };
 
@@ -24,7 +24,7 @@ My.App.controller('appCtrl', ['$scope', '$element', 'searchService', function ($
 
     // search
     $scope.searchIssues = function () {
-        var params = {repo: $scope.inputRepository, keyword: $scope.inputKeyword};
+        var params = {repo: $scope.inputIdentity, keyword: $scope.inputKeyword};
 
         searchService.searchIssues(params).then(function (result) {
             $scope.issues = result.items;
@@ -37,7 +37,7 @@ My.App.controller('appCtrl', ['$scope', '$element', 'searchService', function ($
         timeout = setTimeout(function() {
             $scope.repositories = [];
 
-            var splited = $scope.inputRepository.split('/');
+            var splited = $scope.inputIdentity.split('/');
 
             if (splited.length == 2) {
                 var params = {user: splited[0], keyword: splited[1]};

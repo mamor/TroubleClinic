@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>GitHub issues search</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//bootswatch.com/slate/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Inconsolata">
@@ -13,19 +13,18 @@
 <body ng-app="myApp">
     <div class="container">
         <h1>GitHub issues search</h1>
-        <p><a target="_blank" href="https://github.com/mamor/gh-issues-search/issues">Feedback</a></p>
 
         <div ng-controller="appCtrl">
             <div class="form-inline" my-keypress-enter="searchIssues()">
-                <div class="pull-left input-repository">
-                    <input type="text" class="form-control" placeholder="username/repository" ng-keyup="searchRepositories()" ng-model="inputRepository" />
+                <span class="input-identity">
+                    <input type="text" class="form-control" placeholder="user or user/repo" ng-keyup="searchRepositories()" ng-model="inputIdentity" />
                     <ul class="list-unstyled panel panel-default list-repository">
-                        <li ng-repeat="repository in repositories"><a ng-click="selectRepository(repository.full_name)">{{ repository.full_name }}</a></li>
+                        <li ng-repeat="repository in repositories" ng-click="setIdentity(repository.full_name)"><a href="">{{ repository.full_name }}</a></li>
                     </ul>
-                </div>
+                </span>
                 <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
                 <input type="text" class="form-control" placeholder="internal filter" ng-model="inputFilter" />
-                <button class="btn btn-default" ng-click="searchIssues()">Search</button>
+                <a class="btn btn-link pull-right" target="_blank" href="https://github.com/mamor/gh-issues-search/issues" tabindex="-1">Feedback</a>
             </div>
 
             <p class="input-filter">

@@ -4,23 +4,26 @@ body, h1 {
 .input-filter {
     margin: 20px 0;
 }
-.input-repository {
+.input-identity {
     position: relative;
-    margin-right: 4px;
 }
 .list-repository {
     position: absolute;
-    top: 38px;
-    left: 0px;
+    top: 35px;
+    left: 0;
 }
 .list-repository li {
-    padding: 5px;
-    border-bottom: 1px solid #eee;
+    padding: 10px;
     cursor: pointer;
+    background: #444;
+    border-bottom: 1px solid #000;
 }
 .list-repository li:last-child {
     border-bottom: 0;
 }
 .list-repository li:hover {
-    background: #eee;
+    background: #666;
+}
+.list-repository li a:hover {
+    text-decoration: none;
 }
