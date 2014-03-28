@@ -1,3 +1,6 @@
+body, h1 {
+    font-family: 'Inconsolata', sans-serif;
+}
 .input-repository {
     position: relative;
     margin-right: 4px;
