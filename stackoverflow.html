@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Search Stack Overflow questions</title>
+    <link rel="stylesheet" href="css/bootswatch.com-slate-bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Inconsolata">
+    <link rel="stylesheet" href="css/stackoverflow.css">
+    <script src="js/stackoverflow.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="bodyCtrl" my-keyup-escape="escape()">
+    <div class="container">
+        <h1>Search Stack Overflow questions</h1>
+
+        <div ng-controller="appCtrl">
+            <p>Press enter to search. Press esc to reset.</p>
+            <div class="form-inline" my-keypress-enter="searchQuestions()">
+                <input type="text" class="form-control" placeholder="tag1;tag2;tag3..." ng-model="inputTags" />
+                <input type="text" class="form-control" placeholder="in title word" ng-model="inputInTitle" />
+                <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
+                <select class="form-control" ng-model="inputClosed">
+                    <option value="">All state</option>
+                    <option value="false">Only open</option>
+                    <option value="true">Only closed</option>
+                </select>
+                <input type="text" class="form-control" placeholder="internal filter" ng-model="inputFilter" />
+                <a class="btn btn-link pull-right" target="_blank" href="https://github.com/mamor/gh-issues-search/issues" tabindex="-1">Feedback</a>
+            </div>
+
+            <p class="input-filter">
+                {{ (questions | filter:inputFilter).length }} <ng-pluralize count="(questions | filter:inputFilter).length" when="{'one': 'result.', 'other': 'results.'}"></ng-pluralize>
+            </p>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 7%;"><a href="" ng-click="sort = 'closed_date'; reverse = ! reverse">State</a></th>
+                        <th style="width: 43%;"><a href="" ng-click="sort = 'title'; reverse = ! reverse">Title</a></th>
+                        <th style="width: 12%;"><a href="" ng-click="sort = 'creation_date'; reverse = ! reverse">Created</a></th>
+                        <th style="width: 12%;"><a href="" ng-click="sort = 'last_activity_date'; reverse = ! reverse">Updated</a></th>
+                        <th style="width: 12%;"><a href="" ng-click="sort = 'closed_date'; reverse = ! reverse">Closed</a></th>
+                        <th style="width: 7%;"><a href="" ng-click="sort = 'score'; reverse = ! reverse">Score</a></th>
+                        <th style="width: 7%;"><a href="" ng-click="sort = 'answer_count'; reverse = ! reverse">Answers</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="question in questions | orderBy:sort:reverse | filter:inputFilter">
+                        <td><span ng-class="'label label-' + stateLabel(question.closed_date)">{{ state(question.closed_date) }}</span></td>
+                        <td><a target="_blank" href="{{ question.link }}">{{ question.title }}</a></td>
+                        <td>{{ (question.creation_date * 1000) | date:'yyyy-MM-dd' }}</td>
+                        <td>{{ (question.last_activity_date * 1000) | date:'yyyy-MM-dd' }}</td>
+                        <td>{{ (question.closed_date * 1000) | dateMaybeEmpty:'yyyy-MM-dd' }}</td>
+                        <td style="text-align: right;">{{ question.score }}</td>
+                        <td style="text-align: right;">{{ question.answer_count }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
