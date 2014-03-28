@@ -18,6 +18,10 @@ My.App.controller('appCtrl', ['$scope', '$element', 'searchService', function ($
         $scope.repositories = [];
     };
 
+    $scope.issueLabel = function (state) {
+        return state === 'closed' ? 'danger' : 'success';
+    };
+
     // search
     $scope.searchIssues = function () {
         var params = {repo: $scope.inputRepository, keyword: $scope.inputKeyword};

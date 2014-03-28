@@ -24,26 +24,33 @@
                     </ul>
                 </div>
                 <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
+                <input type="text" class="form-control" placeholder="internal filter" ng-model="inputFilter" />
                 <button class="btn btn-default" ng-click="searchIssues()">Search</button>
             </div>
-            <h2>Results</h2>
-            <table class="table table-striped">
+
+            <p class="input-filter">
+                {{ (issues | filter:inputFilter).length }} <ng-pluralize count="(issues | filter:inputFilter).length" when="{'one': 'result.', 'other': 'results.'}"></ng-pluralize>
+            </p>
+
+            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th style="width: 5%;">No.</th>
-                        <th style="width: 5%;">State</th>
-                        <th style="width: 10%;">Created</th>
-                        <th style="width: 10%;">Updated</th>
-                        <th style="width: 70%;">Title</th>
+                        <th style="width: 7%;"><a href="" ng-click="sort = 'state'; reverse = ! reverse">State</a></th>
+                        <th style="width: 50%;"><a href="" ng-click="sort = 'title'; reverse = ! reverse">Title</a></th>
+                        <th style="width: 12%;"><a href="" ng-click="sort = 'created_at'; reverse = ! reverse">Created</a></th>
+                        <th style="width: 12%;"><a href="" ng-click="sort = 'updated_at'; reverse = ! reverse">Updated</a></th>
+                        <th style="width: 12%;"><a href="" ng-click="sort = 'closed_at'; reverse = ! reverse">Closed</a></th>
+                        <th style="width: 7%;"><a href="" ng-click="sort = 'comments'; reverse = ! reverse">Comments</a></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="(index, issue) in issues">
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ issue.state }}</td>
+                    <tr ng-repeat="issue in issues | orderBy:sort:reverse | filter:inputFilter">
+                        <td><span ng-class="'label label-' + issueLabel(issue.state)">{{ issue.state }}</span></td>
+                        <td><a target="_blank" href="{{ issue.html_url }}">{{ issue.title }}</a></td>
                         <td>{{ issue.created_at | date:'yyyy-MM-dd' }}</td>
                         <td>{{ issue.updated_at | date:'yyyy-MM-dd' }}</td>
-                        <td><a target="_blank" href="{{ issue.html_url }}">{{ issue.title }}</a></td>
+                        <td>{{ issue.closed_at | date:'yyyy-MM-dd' }}</td>
+                        <td style="text-align: right;">{{ issue.comments }}</td>
                     </tr>
                 </tbody>
             </table>
