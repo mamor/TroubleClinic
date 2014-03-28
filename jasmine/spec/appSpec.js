@@ -17,12 +17,18 @@ describe('app.js', function () {
     describe('services', function () {
         describe('searchService', function () {
             describe('#searchIssues()', function () {
-                it('should call GitHub search issues API', inject(function ($injector) {
+                var spyMethods;
+                var spyResource;
+                var injector;
+
+                beforeEach(inject(function ($injector) {
+                    injector = $injector;
+
                     // spy $resource
-                    var spyMethods = {get: function () {}};
+                    spyMethods = {get: function () {}};
                     spyOn(spyMethods, 'get');
 
-                    var spyResource = jasmine.createSpy('spyResource').and.returnValue(spyMethods);
+                    spyResource = jasmine.createSpy('spyResource').and.returnValue(spyMethods);
 
                     provide.factory('$resource', function () {
                         return spyResource;
@@ -34,22 +40,36 @@ describe('app.js', function () {
                             return {promise: 'test'}
                         }};
                     });
+                }));
 
-                    var result = $injector.get('searchService').searchIssues({keyword: 'x', repo: 'y'});
-
-                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/issues?per_page=100&q=:keyword+repo::repo', {keyword: 'x', repo: 'y'});
+                it('should call GitHub search issues API by user', function () {
+                    var result = injector.get('searchService').searchIssues({keyword: 'x', identity: 'y'});
+                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/issues?per_page=100&q=:keyword+user::user', {keyword: 'x', user: 'y'});
                     expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
                     expect(result).toBe('test');
-                }));
+                });
+
+                it('should call GitHub search issues API by repo', function () {
+                    var result = injector.get('searchService').searchIssues({keyword: 'x', identity: 'y/z'});
+                    expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/issues?per_page=100&q=:keyword+repo::repo', {keyword: 'x', repo: 'y/z'});
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(result).toBe('test');
+                });
             });
 
             describe('#searchRepositories()', function () {
-                it('should call GitHub search repositories API', inject(function ($injector) {
+                var spyMethods;
+                var spyResource;
+                var injector;
+
+                beforeEach(inject(function ($injector) {
+                    injector = $injector;
+
                     // spy $resource
-                    var spyMethods = {get: function () {}};
+                    spyMethods = {get: function () {}};
                     spyOn(spyMethods, 'get');
 
-                    var spyResource = jasmine.createSpy('spyResource').and.returnValue(spyMethods);
+                    spyResource = jasmine.createSpy('spyResource').and.returnValue(spyMethods);
 
                     provide.factory('$resource', function () {
                         return spyResource;
@@ -61,13 +81,14 @@ describe('app.js', function () {
                             return {promise: 'test'}
                         }};
                     });
+                }));
 
-                    var result = $injector.get('searchService').searchRepositories({user: 'x', keyword: 'y'});
-
+                it('should call GitHub search repositories API', function () {
+                    var result = injector.get('searchService').searchRepositories({user: 'x', keyword: 'y'});
                     expect(spyResource).toHaveBeenCalledWith('https://api.github.com/search/repositories?per_page=100&q=user::user+:keyword', {user: 'x', keyword: 'y'});
                     expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
                     expect(result).toBe('test');
-                }));
+                });
             });
         });
     });
@@ -94,6 +115,21 @@ describe('app.js', function () {
                 expect(scope.spyCallback).not.toHaveBeenCalled();
 
                 element.trigger($.Event('keypress', {keyCode: 13}));
+                expect(scope.spyCallback).toHaveBeenCalledWith(1);
+            });
+        });
+
+        describe('myKeyupEscape', function () {
+            it('should subscribe keyup 27', function () {
+                scope.spyCallback = function (){};
+                spyOn(scope, 'spyCallback');
+
+                element = compile('<div my-keyup-escape="spyCallback(1)"></div>')(scope);
+
+                element.trigger($.Event('keyup', {keyCode: 1}));
+                expect(scope.spyCallback).not.toHaveBeenCalled();
+
+                element.trigger($.Event('keyup', {keyCode: 27}));
                 expect(scope.spyCallback).toHaveBeenCalledWith(1);
             });
         });
