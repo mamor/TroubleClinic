@@ -47,28 +47,28 @@ describe('github.js', function () {
                 it('should call Stack Overflow search question API with tagged', function () {
                     var result = injector.get('searchService').searchQuestions({tagged: 'x'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + '&tagged=:tagged', {tagged: 'x'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
 
                 it('should call Stack Overflow search question API with title', function () {
                     var result = injector.get('searchService').searchQuestions({title: 'x'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + '&title=:title', {title: 'x'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
 
                 it('should call Stack Overflow search question API with q', function () {
                     var result = injector.get('searchService').searchQuestions({q: 'x'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + '&q=:q', {q: 'x'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
 
                 it('should call Stack Overflow search question API with closed', function () {
                     var result = injector.get('searchService').searchQuestions({closed: 'x'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + '&closed=:closed', {closed: 'x'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
             });

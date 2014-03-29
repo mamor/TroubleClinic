@@ -47,21 +47,21 @@ describe('github.js', function () {
                 it('should call GitHub search issues API by user', function () {
                     var result = injector.get('searchService').searchIssues({keyword: 'x', identity: 'y'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + 'user::user', {keyword: 'x', user: 'y'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
 
                 it('should call GitHub search issues API by repo', function () {
                     var result = injector.get('searchService').searchIssues({keyword: 'x', identity: 'y/z'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + 'repo::repo', {keyword: 'x', repo: 'y/z'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
 
                 it('should call GitHub search issues API by state', function () {
                     var result = injector.get('searchService').searchIssues({keyword: 'x', identity: 'y', state: 'z'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl + 'user::user+state::state', {keyword: 'x', user: 'y', state: 'z'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
             });
@@ -97,7 +97,7 @@ describe('github.js', function () {
                 it('should call GitHub search repositories API', function () {
                     var result = injector.get('searchService').searchRepositories({user: 'x', keyword: 'y'});
                     expect(spyResource).toHaveBeenCalledWith(baseUrl, {user: 'x', keyword: 'y'});
-                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function));
+                    expect(spyMethods.get).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
                     expect(result).toBe('test');
                 });
             });
