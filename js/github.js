@@ -17,7 +17,7 @@ My.GitHubApp.controller('bodyCtrl', ['$scope', function ($scope) {
     };
 }]);
 
-My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope, searchService) {
+My.GitHubApp.controller('appCtrl', ['$scope', '$timeout', 'searchService', function ($scope, $timeout, searchService) {
     $scope.reset = function () {
         $('input[ng-model="inputIdentity"]').focus();
 
@@ -64,8 +64,8 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
 
     var timeout;
     $scope.searchRepositories = function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
+        $timeout.cancel(timeout);
+        timeout = $timeout(function () {
             $scope.$apply(function () {
                 angular.copy([], $scope.repositories);
             });
@@ -84,7 +84,7 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
                     }
                 );
             }
-        }, 200);
+        }, 300);
     };
 
     $scope.$on('bodyClicked', function () {
