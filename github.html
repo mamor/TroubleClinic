@@ -22,7 +22,7 @@
             <p>Press enter to search. Press esc to reset. Move to the suggested repository list by tab key.</p>
             <div class="form-inline" my-keypress-enter="searchIssues()">
                 <span class="input-identity">
-                    <input type="text" class="form-control" placeholder="user or user/repo" ng-keyup="searchRepositories()" ng-model="inputIdentity" />
+                    <input type="text" class="form-control" placeholder="user or user/repo" ng-change="searchRepositories()" ng-model="inputIdentity" />
                     <ul class="list-unstyled panel panel-default list-repository">
                         <li ng-repeat="repository in repositories" ng-click="setIdentity(repository.full_name)"><a href="">{{ repository.full_name }}</a></li>
                     </ul>
