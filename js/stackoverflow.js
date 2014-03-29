@@ -23,6 +23,7 @@ My.StackOverflowApp.controller('appCtrl', ['$scope', 'searchService', function (
         $scope.inputKeyword = '';
         $scope.inputClosed = '';
         $scope.inputFilter = '';
+        $scope.loading = false;
     };
 
     $scope.reset();
@@ -38,7 +39,9 @@ My.StackOverflowApp.controller('appCtrl', ['$scope', 'searchService', function (
     $scope.searchQuestions = function () {
         var params = {tagged: $scope.inputTags, title: $scope.inputInTitle, q: $scope.inputKeyword, closed: $scope.inputClosed};
 
+        $scope.loading = true;
         searchService.searchQuestions(params).then(function (result) {
+            $scope.loading = false;
             $scope.questions = result.items;
             $('input[ng-model="inputFilter"]').focus();
         });

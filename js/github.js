@@ -27,6 +27,7 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
         $scope.inputKeyword = '';
         $scope.inputState = '';
         $scope.inputFilter = '';
+        $scope.loading = false;
     };
 
     $scope.reset();
@@ -44,7 +45,9 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
     $scope.searchIssues = function () {
         var params = {identity: $scope.inputIdentity, keyword: $scope.inputKeyword, state: $scope.inputState};
 
+        $scope.loading = true;
         searchService.searchIssues(params).then(function (result) {
+            $scope.loading = false;
             $scope.issues = result.items;
             $('input[ng-model="inputFilter"]').focus();
         });
