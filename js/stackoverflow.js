@@ -24,6 +24,7 @@ My.StackOverflowApp.controller('appCtrl', ['$scope', 'searchService', function (
         $scope.inputClosed = '';
         $scope.inputFilter = '';
         $scope.loading = false;
+        $scope.error = false;
     };
 
     $scope.reset();

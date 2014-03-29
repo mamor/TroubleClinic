@@ -28,6 +28,7 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
         $scope.inputState = '';
         $scope.inputFilter = '';
         $scope.loading = false;
+        $scope.error = false;
     };
 
     $scope.reset();
