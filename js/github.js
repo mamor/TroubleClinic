@@ -47,6 +47,7 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
 
         $scope.loading = true;
         $scope.error = false;
+        $scope.issues = [];
         searchService.searchIssues(params).then(
             function (result) {
                 $scope.loading = false;

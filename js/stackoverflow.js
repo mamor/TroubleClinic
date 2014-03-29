@@ -41,6 +41,7 @@ My.StackOverflowApp.controller('appCtrl', ['$scope', 'searchService', function (
 
         $scope.loading = true;
         $scope.error = false;
+        $scope.questions = [];
         searchService.searchQuestions(params).then(
             function (result) {
                 $scope.loading = false;
