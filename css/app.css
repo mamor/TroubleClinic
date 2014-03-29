@@ -1,3 +1,6 @@
 body, h1 {
     font-family: 'Inconsolata', sans-serif;
 }
+a i.fa {
+    color: #C8C8C8;
+}
