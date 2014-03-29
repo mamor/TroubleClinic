@@ -46,11 +46,18 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
         var params = {identity: $scope.inputIdentity, keyword: $scope.inputKeyword, state: $scope.inputState};
 
         $scope.loading = true;
-        searchService.searchIssues(params).then(function (result) {
-            $scope.loading = false;
-            $scope.issues = result.items;
-            $('input[ng-model="inputFilter"]').focus();
-        });
+        $scope.error = false;
+        searchService.searchIssues(params).then(
+            function (result) {
+                $scope.loading = false;
+                $scope.issues = result.items;
+                $('input[ng-model="inputFilter"]').focus();
+            },
+            function (error) {
+                $scope.loading = false;
+                $scope.error = 'An error occured with GitHub API. ' + error.data.message;
+            }
+        );
     };
 
     var timeout;
@@ -66,9 +73,14 @@ My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope,
             if (splited.length == 2) {
                 var params = {user: splited[0], keyword: splited[1]};
 
-                searchService.searchRepositories(params).then(function (result) {
-                    $scope.repositories = result.items;
-                });
+                searchService.searchRepositories(params).then(
+                    function (result) {
+                        $scope.repositories = result.items;
+                    },
+                    function (error) {
+                        $scope.error = 'An error occured with GitHub API. ' + error.data.message;
+                    }
+                );
             }
         }, 200);
     };
@@ -102,9 +114,14 @@ My.GitHubApp.service('searchService', ['$resource', '$q', function ($resource, $
 
         var deferred = $q.defer();
 
-        $resource(url, paramDefaults).get(function (response) {
-            deferred.resolve(response);
-        });
+        $resource(url, paramDefaults).get(
+            function (response) {
+                deferred.resolve(response);
+            },
+            function (error) {
+                deferred.reject(error);
+            }
+        );
 
         return deferred.promise;
     };
@@ -115,9 +132,14 @@ My.GitHubApp.service('searchService', ['$resource', '$q', function ($resource, $
 
         var deferred = $q.defer();
 
-        $resource(url, paramDefaults).get(function (response) {
-            deferred.resolve(response);
-        });
+        $resource(url, paramDefaults).get(
+            function (response) {
+                deferred.resolve(response);
+            },
+            function (error) {
+                deferred.reject(error);
+            }
+        );
 
         return deferred.promise;
     };

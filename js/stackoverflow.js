@@ -40,11 +40,18 @@ My.StackOverflowApp.controller('appCtrl', ['$scope', 'searchService', function (
         var params = {tagged: $scope.inputTags, title: $scope.inputInTitle, q: $scope.inputKeyword, closed: $scope.inputClosed};
 
         $scope.loading = true;
-        searchService.searchQuestions(params).then(function (result) {
-            $scope.loading = false;
-            $scope.questions = result.items;
-            $('input[ng-model="inputFilter"]').focus();
-        });
+        $scope.error = false;
+        searchService.searchQuestions(params).then(
+            function (result) {
+                $scope.loading = false;
+                $scope.questions = result.items;
+                $('input[ng-model="inputFilter"]').focus();
+            },
+            function (error) {
+                $scope.loading = false;
+                $scope.error = 'An error occured with Stack Overflow API. ' + error.data.error_name;
+            }
+        );
     };
 
     $scope.$on('escapeKeyPressed', function () {
@@ -82,9 +89,14 @@ My.StackOverflowApp.service('searchService', ['$resource', '$q', function ($reso
 
         var deferred = $q.defer();
 
-        $resource(url, paramDefaults).get(function (response) {
-            deferred.resolve(response);
-        });
+        $resource(url, paramDefaults).get(
+            function (response) {
+                deferred.resolve(response);
+            },
+            function (error) {
+                deferred.reject(error);
+            }
+        );
 
         return deferred.promise;
     };
