@@ -1,19 +1,19 @@
 /**
  * initialize
  */
-var My = {};
-My.App = angular.module('myApp', ['ngResource']);
+if (My === void 0) var My = {};
+My.StackOverflowApp = angular.module('myStackOverflowApp', ['myAngular', 'ngResource']);
 
 /**
  * controllers
  */
-My.App.controller('bodyCtrl', ['$scope', function ($scope) {
+My.StackOverflowApp.controller('bodyCtrl', ['$scope', function ($scope) {
     $scope.escape = function () {
         $scope.$broadcast('escapeKeyPressed');
     };
 }]);
 
-My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searchService) {
+My.StackOverflowApp.controller('appCtrl', ['$scope', 'searchService', function ($scope, searchService) {
     $scope.reset = function () {
         $('input[ng-model="inputTags"]').focus();
 
@@ -52,10 +52,8 @@ My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searc
 /**
  * services
  */
-My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
+My.StackOverflowApp.service('searchService', ['$resource', '$q', function ($resource, $q) {
     this.searchQuestions = function (params) {
-        var deferred = $q.defer();
-
         var url = 'https://api.stackexchange.com/2.2/search/advanced?order=desc&sort=votes&site=stackoverflow&pagesize=100';
         var paramDefaults = {};
 
@@ -79,50 +77,12 @@ My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
             paramDefaults.closed = params.closed;
         }
 
+        var deferred = $q.defer();
+
         $resource(url, paramDefaults).get(function (response) {
             deferred.resolve(response);
         });
 
         return deferred.promise;
-    };
-}]);
-
-/**
- * directives
- */
-My.App.directive('myKeypressEnter', [function () {
-    return function (scope, element, attrs) {
-        element.on('keypress', function (event) {
-            if (event.keyCode === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.myKeypressEnter);
-                });
-            }
-        });
-    };
-}]);
-
-My.App.directive('myKeyupEscape', [function () {
-    return function (scope, element, attrs) {
-        element.on('keyup', function (event) {
-            if (event.keyCode === 27) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.myKeyupEscape);
-                });
-            }
-        });
-    };
-}]);
-
-/**
- * filters
- */
-My.App.filter('dateMaybeEmpty', ['$filter', function ($filter) {
-    return function (date, format) {
-        if (! date) {
-            return '';
-        }
-
-        return $filter('date')(date, format);
     };
 }]);

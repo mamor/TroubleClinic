@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Search Stack Overflow questions</title>
+    <title>Search Stack Overflow questions | TroubleClinic</title>
     <link rel="stylesheet" href="css/bootswatch.com-slate-bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Inconsolata">
+    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/stackoverflow.css">
+    <script src="js/myAngular.js"></script>
     <script src="js/stackoverflow.js"></script>
 </head>
-<body ng-app="myApp" ng-controller="bodyCtrl" my-keyup-escape="escape()">
+<body ng-app="myStackOverflowApp" ng-controller="bodyCtrl" my-keyup-escape="escape()">
     <div class="container">
-        <h1>Search Stack Overflow questions</h1>
+        <h1><a href="index.html">TroubleClinic</a> - Search Stack Overflow questions</h1>
 
         <div ng-controller="appCtrl">
             <p>Press enter to search. Press esc to reset.</p>

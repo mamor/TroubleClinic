@@ -2,65 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>GitHub issues search</title>
+    <title>TroubleClinic</title>
     <link rel="stylesheet" href="css/bootswatch.com-slate-bootstrap.min.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Inconsolata">
     <link rel="stylesheet" href="css/app.css">
-    <script src="js/app.js"></script>
 </head>
-<body ng-app="myApp" ng-controller="bodyCtrl" ng-click="click()" my-keyup-escape="escape()">
+<body>
     <div class="container">
-        <h1>GitHub issues search</h1>
-
-        <div ng-controller="appCtrl">
-            <p>Press enter to search. Press esc to reset. Move to the suggested repository list by tab key.</p>
-            <div class="form-inline" my-keypress-enter="searchIssues()">
-                <span class="input-identity">
-                    <input type="text" class="form-control" placeholder="user or user/repo" ng-keyup="searchRepositories()" ng-model="inputIdentity" />
-                    <ul class="list-unstyled panel panel-default list-repository">
-                        <li ng-repeat="repository in repositories" ng-click="setIdentity(repository.full_name)"><a href="">{{ repository.full_name }}</a></li>
-                    </ul>
-                </span>
-                <input type="text" class="form-control" placeholder="keyword" ng-model="inputKeyword" />
-                <select class="form-control" ng-model="inputState">
-                    <option value="">All state</option>
-                    <option value="open">Only open</option>
-                    <option value="closed">Only closed</option>
-                </select>
-                <input type="text" class="form-control" placeholder="internal filter" ng-model="inputFilter" />
-                <a class="btn btn-link pull-right" target="_blank" href="https://github.com/mamor/gh-issues-search/issues" tabindex="-1">Feedback</a>
-            </div>
-
-            <p class="input-filter">
-                {{ (issues | filter:inputFilter).length }} <ng-pluralize count="(issues | filter:inputFilter).length" when="{'one': 'result.', 'other': 'results.'}"></ng-pluralize>
-            </p>
-
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th style="width: 7%;"><a href="" ng-click="sort = 'state'; reverse = ! reverse">State</a></th>
-                        <th style="width: 50%;"><a href="" ng-click="sort = 'title'; reverse = ! reverse">Title</a></th>
-                        <th style="width: 12%;"><a href="" ng-click="sort = 'created_at'; reverse = ! reverse">Created</a></th>
-                        <th style="width: 12%;"><a href="" ng-click="sort = 'updated_at'; reverse = ! reverse">Updated</a></th>
-                        <th style="width: 12%;"><a href="" ng-click="sort = 'closed_at'; reverse = ! reverse">Closed</a></th>
-                        <th style="width: 7%;"><a href="" ng-click="sort = 'comments'; reverse = ! reverse">Comments</a></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="issue in issues | orderBy:sort:reverse | filter:inputFilter">
-                        <td><span ng-class="'label label-' + issueLabel(issue.state)">{{ issue.state }}</span></td>
-                        <td><a target="_blank" href="{{ issue.html_url }}">{{ issue.title }}</a></td>
-                        <td>{{ issue.created_at | date:'yyyy-MM-dd' }}</td>
-                        <td>{{ issue.updated_at | date:'yyyy-MM-dd' }}</td>
-                        <td>{{ issue.closed_at | date:'yyyy-MM-dd' }}</td>
-                        <td style="text-align: right;">{{ issue.comments }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <h1>TroubleClinic</h1>
+        <ul>
+            <li><a href="github.html">Search GitHub issues</a></li>
+            <li><a href="stackoverflow.html">Search Stack Overflow questions</a></li>
+        </ul>
     </div>
 </body>
 </html>

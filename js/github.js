@@ -1,23 +1,23 @@
 /**
  * initialize
  */
-var My = {};
-My.App = angular.module('myApp', ['ngResource']);
+if (My === void 0) var My = {};
+My.GitHubApp = angular.module('myGitHubApp', ['myAngular', 'ngResource']);
 
 /**
  * controllers
  */
-My.App.controller('bodyCtrl', ['$scope', function ($scope) {
-    $scope.click = function () {
-        $scope.$broadcast('bodyClicked');
-    };
-
+My.GitHubApp.controller('bodyCtrl', ['$scope', function ($scope) {
     $scope.escape = function () {
         $scope.$broadcast('escapeKeyPressed');
     };
+
+    $scope.click = function () {
+        $scope.$broadcast('bodyClicked');
+    };
 }]);
 
-My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searchService) {
+My.GitHubApp.controller('appCtrl', ['$scope', 'searchService', function ($scope, searchService) {
     $scope.reset = function () {
         $('input[ng-model="inputIdentity"]').focus();
 
@@ -37,7 +37,7 @@ My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searc
         $('input[ng-model="inputKeyword"]').focus();
     };
 
-    $scope.issueLabel = function (state) {
+    $scope.stateLabel = function (state) {
         return state === 'closed' ? 'danger' : 'success';
     };
 
@@ -82,10 +82,8 @@ My.App.controller('appCtrl', ['$scope', 'searchService', function ($scope, searc
 /**
  * services
  */
-My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
+My.GitHubApp.service('searchService', ['$resource', '$q', function ($resource, $q) {
     this.searchIssues = function (params) {
-        var deferred = $q.defer();
-
         var isRepo = params.identity.split('/').length == 2;
 
         var url = 'https://api.github.com/search/issues?per_page=100&q=:keyword+' +
@@ -99,6 +97,8 @@ My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
             paramDefaults.state = params.state;
         }
 
+        var deferred = $q.defer();
+
         $resource(url, paramDefaults).get(function (response) {
             deferred.resolve(response);
         });
@@ -107,42 +107,15 @@ My.App.service('searchService', ['$resource', '$q', function ($resource, $q) {
     };
 
     this.searchRepositories = function (params) {
-        var deferred = $q.defer();
-
         var url = 'https://api.github.com/search/repositories?per_page=100&q=user::user+:keyword';
         var paramDefaults = {user: params.user, keyword: params.keyword};
+
+        var deferred = $q.defer();
 
         $resource(url, paramDefaults).get(function (response) {
             deferred.resolve(response);
         });
 
         return deferred.promise;
-    };
-}]);
-
-/**
- * directives
- */
-My.App.directive('myKeypressEnter', [function () {
-    return function (scope, element, attrs) {
-        element.on('keypress', function (event) {
-            if (event.keyCode === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.myKeypressEnter);
-                });
-            }
-        });
-    };
-}]);
-
-My.App.directive('myKeyupEscape', [function () {
-    return function (scope, element, attrs) {
-        element.on('keyup', function (event) {
-            if (event.keyCode === 27) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.myKeyupEscape);
-                });
-            }
-        });
     };
 }]);
